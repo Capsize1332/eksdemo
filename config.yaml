@@ -1,0 +1,30 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+metadata:
+  name: eksdemo
+  region: ap-northeast-1
+  version: "1.29"
+vpc:
+  id: vpc-088a40bd79b157296
+  subnets:
+    public:
+      eksdemo-PubSubnet-1a: { id: subnet-0bdde6ab3fc68451c }
+      eksdemo-PubSubnet-1c: { id: subnet-04a87cca632db9acc }
+    private:
+      eksdemo-PrivSubnet-1a: { id: subnet-00c91b247ec12f9bc }
+      eksdemo-PrivSubnet-1c: { id: subnet-0ad3413a43d491f42 }
+
+managedNodeGroups:
+  - name: EKSdemo-MNG-1
+    labels:
+      role: worker
+    instanceType: t3.small
+    minSize: 2
+    maxSize: 4
+    desiredCapacity: 1
+    privateNetworking: true
+    ssh:
+      publicKeyName: eksdemo
+    subnets:
+    - eksdemo-PrivSubnet-1a
+    - eksdemo-PrivSubnet-1c
